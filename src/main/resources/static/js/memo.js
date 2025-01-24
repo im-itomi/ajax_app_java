@@ -1,3 +1,19 @@
+const buildHTML = (XHR) => {
+  const item = XHR.response;
+  const html = `
+  <div class="post">
+    <div class="post-date">
+      投稿日時：${item.createdAt}
+    </div>
+    <div class="post-content">
+      ${item.content}
+    </div>
+  </div>`;
+
+  return html;
+}
+
+
 function post() {
   const submit = document.getElementById("submit");
   submit.addEventListener("click", (e) => {
@@ -8,6 +24,21 @@ function post() {
     XHR.open("POST", "/posts", true);
     XHR.responseType = "json";
     XHR.send(formData);
+
+    
+    XHR.onload = () => {
+      // 通信失敗時処理
+      if (XHR.status != 200) {
+        alert(`Error ${XHR.status}: ${XHR.response.error}`);
+        return null;
+      }
+
+      // 通信成功時処理
+      const list = document.getElementById("list");
+      const formText = document.getElementById("content");
+      list.insertAdjacentHTML("afterend", buildHTML(XHR));
+      formText.value = "";
+    };
 
   });
 }
