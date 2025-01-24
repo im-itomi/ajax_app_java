@@ -21,13 +21,15 @@ public class PostController {
   public String showList(Model model) {
     var postList = postRepository.findAll();
     model.addAttribute("postList", postList);
+    model.addAttribute("postForm", new PostForm());
     return "posts/index";
   }
 
-  @GetMapping("/postForm")
-  public String showPostForm(@ModelAttribute("postForm") PostForm form){
-      return "posts/postForm";
-  }
+  // フォームをトップページに表示するようにしたため、不要により削除
+  // @GetMapping("/postForm")
+  // public String showPostForm(@ModelAttribute("postForm") PostForm form){
+  //     return "posts/postForm";
+  // }
 
   @PostMapping("/posts")
   public String savePost(@ModelAttribute("postForm") PostForm form){
